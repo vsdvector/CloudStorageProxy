@@ -1,0 +1,57 @@
+﻿<Window x:Class="DesktopApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DesktopApp for Cloud Storage Proxy" Height="500" Width="600"
+        xmlns:local="clr-namespace:DesktopApp">
+    <Border Margin="3" BorderBrush="Silver" BorderThickness="1">
+        <StackPanel Orientation="Vertical">
+            <Expander IsExpanded="True" Header="Status" HorizontalAlignment="Stretch" Margin="0,10,0,0" Name="expander1" VerticalAlignment="Top">
+                <Border BorderBrush="Silver" BorderThickness="1" HorizontalAlignment="Stretch" Margin="-1,2,0,0" Name="border1" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition MinWidth="60"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition MinWidth="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Padding="0,3,0,3" Grid.Row="0" Grid.Column="0">File system:</TextBlock>
+                        <TextBlock Padding="0,3,0,3" Grid.Row="0" Grid.Column="1" Name="tbFsStatus"/>
+                        <TextBlock Padding="0,3,0,3" Grid.Row="1" Grid.Column="0">Drive letter:</TextBlock>
+                        <TextBlock Padding="0,3,0,3" Grid.Row="1" Grid.Column="1" Name="tbDriveLetter"/>
+                        <TextBlock Padding="0,3,0,3" Grid.Row="0" Grid.Column="2">Service status:</TextBlock>
+                        <TextBlock Padding="0,3,0,3" Grid.Row="0" Grid.Column="3" Name="tbSrvStatus" />
+                    </Grid>
+                </Border>
+            </Expander>
+            <Expander Header="Config" HorizontalAlignment="Stretch" Margin="0,10,0,0" Name="configExpander" VerticalAlignment="Top">
+                <Border BorderBrush="Silver" BorderThickness="1" Margin="-1,2,0,0" Name="configExpanderBorder" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition MaxWidth="120"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition MinWidth="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Padding="0,3,0,3" Grid.Row="0" Grid.Column="0">Chooser drive letter:</TextBlock>
+                        <ComboBox Grid.Column="1" Height="23" MinWidth="80" MaxWidth="100" HorizontalAlignment="Left" Margin="11,0,0,0" Name="cmbDrvLetter" VerticalAlignment="Top"/>
+                        <Button Command="local:MainWindow.MountCommand" Margin="5,5,5,5" Grid.Row="1" Grid.Column="1" Name="btnMount" Content="Mount" />
+                        <TextBlock Padding="0,3,0,3" Grid.Row="0" Grid.Column="2">Proxy service:</TextBlock>
+                        <TextBox Name="serviceUrl" Grid.Row="0" Grid.Column="3"></TextBox>
+                        <Button Command="local:MainWindow.SignInCommand" Margin="5,5,5,5" Grid.Row="1" Grid.Column="3" Name="btnAuth" Content="Sign in" />
+                    </Grid>
+                </Border>
+            </Expander>
+            <Expander Header="Authorization" HorizontalAlignment="Stretch" Margin="0,10,0,0" Name="authExpander" VerticalAlignment="Top">
+                <WebBrowser Name="wbAuth"/>
+            </Expander>
+        </StackPanel>
+    </Border>
+</Window>
