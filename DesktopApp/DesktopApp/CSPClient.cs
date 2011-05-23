@@ -59,8 +59,9 @@ namespace CSP
             // remove leading slash
             path = stripLeadingSlash(path);
             
-            if (gdocsLinkExtension )
+            if (gdocsLinkExtension && path.EndsWith(".url"))
             {
+                path = path.Substring(0, path.Length - 4);
                 Metadata metadata = metadataCache[path];
                 if (metadata != null && metadata.gdocs_link!=null)
                 {
@@ -113,7 +114,11 @@ namespace CSP
          */
         public Metadata getMetadata(string path, bool list=true)
         {
-            path = stripLeadingSlash(path);   
+            path = stripLeadingSlash(path);
+            if (gdocsLinkExtension && path.EndsWith(".url"))
+            {
+                path = path.Substring(0, path.Length-4);
+            }
             // check metadata cache
             Metadata metadata = metadataCache[path];
             if (metadata != null)

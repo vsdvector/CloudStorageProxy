@@ -71,7 +71,7 @@ class GDocsBackend(backend.Backend):
         return metadata    
     
     def _path_encode(self, path):
-        return b64encode(path.encode("utf-8"))
+        return b64encode(path)
     
     def _get_path_id(self, client, path):        
         id = self._cache_get(self._path_encode(path),namespace=self.scope)        
@@ -121,7 +121,7 @@ class GDocsBackend(backend.Backend):
             metadata['content'] = []
             for doc in feed.entry:
                 metadata['content'].append(self._read_metadata(doc))                                    
-                self._cache_set(self._path_encode(doc.title.text), 
+                self._cache_set(self._path_encode(doc.title.text.encode("utf-8")), 
                                 doc.resource_id.text,
                                 namespace=self.scope)
         return 200, metadata 

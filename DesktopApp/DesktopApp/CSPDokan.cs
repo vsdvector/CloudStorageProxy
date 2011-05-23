@@ -225,85 +225,7 @@ namespace CSP
             {
                 return -1;
             }
-        }
-
-        /*public int ReadFile(String filename, Byte[] buffer, ref uint readBytes,
-            long offset, DokanFileInfo info)
-        {
-            Debug.WriteLine("ReadFile {0} {1}", filename, offset);
-            readBytes = 0;
-            try
-            {                
-                Metadata meta = info.Context as Metadata;                
-                // get block number
-                int block = (int)(offset / precache_bytes);                
-                if ((ulong)offset >= meta.bytes)
-                {
-                    // offset out of bound, no bytes read
-                    return 0;
-                }
-                int offset_buf = 0; // offset inside buffer
-                // get cache buffer
-                byte[] cbuf = fileCaches[meta.path][block.ToString()];
-                if (cbuf != null)
-                {
-                    // block is cached, no need to make expensive network calls
-                    Debug.WriteLine("CacheHit! ReadFile {0} {1}", filename, offset);
-                    // calculate how many bytes can be read from cache
-                    int toCopy = cbuf.Length - (int)(offset % precache_bytes);
-                    if (buffer.Length < toCopy) {
-                        toCopy = buffer.Length;
-                    }
-                    // read bytes from cache
-                    Buffer.BlockCopy(cbuf, (int)(offset % precache_bytes), buffer, 0, toCopy);
-                    readBytes += (uint)toCopy;
-                    if (buffer.Length > cbuf.Length && cbuf.Length == precache_bytes)
-                    {
-                        // still have data to read
-                        offset += toCopy;
-                        offset_buf = toCopy;
-                    }
-                    else
-                    {
-                        // done!
-                        return 0;
-                    }
-                }
-                // get file stream
-                Stream fs = client.getFile(filename);
-                fs.Seek(offset, SeekOrigin.Begin);
-                // read bytes to buffer
-                readBytes += (uint)fs.Read(buffer, offset_buf, buffer.Length - offset_buf);                
-                if (enableCache)
-                {
-                    // if caching is enabled, try to precache block
-                    uint count = readBytes;                    
-                    // cache content
-                    var precache = Task.Factory.StartNew(() =>
-                    {
-                        // calculate count of bytes in block
-                        int remains = (int)(meta.bytes - (ulong)block * precache_bytes);
-                        if(remains > precache_bytes) {
-                            remains = precache_bytes;
-                        }
-                        // create buffer for block
-                        cbuf = new byte[remains];
-                        fs.Seek(block*precache_bytes, SeekOrigin.Begin);
-                        // read data
-                        fs.Read(cbuf, 0, remains);                        
-                        if (fileCaches.ContainsKey(meta.path))
-                        {
-                            fileCaches[meta.path][block.ToString()] = cbuf;
-                        }
-                    });
-                }
-                return 0;
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-        }*/
+        }      
 
         public int WriteFile(String filename, Byte[] buffer,
             ref uint writtenBytes, long offset, DokanFileInfo info)
@@ -356,7 +278,10 @@ namespace CSP
                 {
                     FileInformation fi = new FileInformation();
                     fi.Attributes = entry.is_dir ? FileAttributes.Directory : FileAttributes.Normal;
-                    fi.LastWriteTime = DateTime.Parse(entry.modified);
+                    if (entry.modified != "")
+                        fi.LastWriteTime = DateTime.Parse(entry.modified);
+                    else
+                        fi.LastWriteTime = DateTime.Now;
                     fi.CreationTime = fi.LastWriteTime;
                     fi.LastAccessTime = fi.LastWriteTime;
                     fi.Length = (long)entry.bytes;
