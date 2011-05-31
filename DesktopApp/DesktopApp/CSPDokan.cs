@@ -110,7 +110,7 @@ namespace CSP
                         if (fileCaches[key].refs <= 0)
                         {
                             FileCache del;
-                            //fileCaches.TryRemove(key, out del);
+                            fileCaches.TryRemove(key, out del);
                         }
                     }
                 }, meta.path);
